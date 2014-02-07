@@ -10,7 +10,7 @@ Subshader {
 	Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
 	LOD 200
 	Blend SrcAlpha OneMinusSrcAlpha
-	Cull Off Lighting Off ZWrite Off ZWrite Off
+	Cull Off Lighting Off ZWrite Off
 	CGPROGRAM
 	#pragma surface surf Lambert addshadow
 	
