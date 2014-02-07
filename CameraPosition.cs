@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraPosition : MonoBehaviour {
 
+	private LineOfSight los;
 	private GameObject player;
 	public bool canLook;
 
@@ -17,6 +18,7 @@ public class CameraPosition : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		los = GetComponent<LineOfSight>();
 		player = GameObject.Find("Player");
 		positionTarget = cameraPosTop;
 		lookTarget = player.transform;
@@ -48,6 +50,7 @@ public class CameraPosition : MonoBehaviour {
 			Vector3 lookAt = new Vector3(cameraPosFPS.rotation.eulerAngles.x +lookX, cameraPosFPS.rotation.eulerAngles.y +lookY, 0);
 			if (transform.position.y < cameraPosFPS.position.y +0.5f) {
 				GetComponent<Light>().enabled = true;
+				los.viewMode = LineOfSight.viewModes.NOFOG;
 			 	transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(lookAt), Time.deltaTime *10);
 			}
 		}

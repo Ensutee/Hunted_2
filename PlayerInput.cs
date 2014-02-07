@@ -68,6 +68,7 @@ public class PlayerInput : MonoBehaviour {
 			} else if (Input.GetButtonUp("Action1") || Input.GetKeyUp(KeyCode.X)) {
 				cameraPos.lookTarget = transform;
 				cameraPos.positionTarget = cameraPos.cameraPosTop;
+				lineOfSight.viewMode = LineOfSight.viewModes.VIEW;
 				isLooking = false;
 			}
 		}
