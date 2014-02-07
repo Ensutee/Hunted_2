@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Trigger : MonoBehaviour {
 
-	public enum triggerType { LIGHTS, CRATES, SPAWN }
+	public enum triggerType { LIGHTS, SMOKE, CRATES, SPAWN }
 	public triggerType trigger;
 
 	private Transform player;
@@ -29,21 +29,26 @@ public class Trigger : MonoBehaviour {
 		run = false;
 		repeatDelay = 0;
 
-		if (trigger == triggerType.SPAWN) {
-			isRepeatable = true;
-			repeatDelay = 30;
-			activationDistMin = 10;
-			activationDistMax = 20;
-		} else if (trigger == triggerType.CRATES) {
-			isRepeatable = false;
-			activationDistMin = 5;
-			activationDistMax = 10;
-		} else if (trigger == triggerType.LIGHTS) {
+		if (trigger == triggerType.LIGHTS) {
 			lightController = gameObject.GetComponent<LightController>();
 			isRepeatable = true;
 			repeatDelay = 10;
 			activationDistMin = 0;
 			activationDistMax = 10;
+		} else if (trigger == triggerType.SMOKE) {
+			isRepeatable = true;
+			repeatDelay = 10;
+			activationDistMin = 0;
+			activationDistMax = 10;
+		} else if (trigger == triggerType.CRATES) {
+			isRepeatable = false;
+			activationDistMin = 5;
+			activationDistMax = 10;
+		} else if (trigger == triggerType.SPAWN) {
+			isRepeatable = true;
+			repeatDelay = 30;
+			activationDistMin = 10;
+			activationDistMax = 20;
 		}
 	}
 	
