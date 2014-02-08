@@ -12,6 +12,7 @@ public class Trigger : MonoBehaviour {
 
 	private bool isRepeatable;
 	private bool hasRun;
+	public bool onlyFPS;
 	public bool run;
 	public bool runable;
 
@@ -58,12 +59,14 @@ public class Trigger : MonoBehaviour {
 		UpdateStatus();
 
 		if (run) {
-			if (trigger == triggerType.SPAWN) {
-				MonsterSpawn();
+			if (trigger == triggerType.LIGHTS) {
+				Lights();
+			} else if (trigger == triggerType.SMOKE) {
+				Smoke();
 			} else if (trigger == triggerType.CRATES) {
 				Crates();
-			} else if (trigger == triggerType.LIGHTS) {
-				Lights();
+			} else if (trigger == triggerType.SPAWN) {
+				MonsterSpawn();
 			}
 		}
 	}
@@ -91,23 +94,6 @@ public class Trigger : MonoBehaviour {
 		else runable = true;
 	}
 
-	void MonsterSpawn() {
-		GameObject enemy = (GameObject)Instantiate(Resources.Load("Prefabs/Monster"));
-		enemy.transform.position = transform.position;
-
-		End();
-	}
-
-	void Crates() {
-		for (int i = 0; i < transform.childCount; i++) {
-			Vector3 playerDir = new Vector3(player.position.x +Random.Range(-15, 15), 0, player.position.z +Random.Range(-15, 15)) -transform.position;
-			float force = Random.Range (150, 200);
-			transform.GetChild(i).rigidbody.isKinematic = false;
-			transform.GetChild(i).rigidbody.AddForce(playerDir.normalized *force, ForceMode.Impulse);
-		}
-		End();
-	}
-
 	void Lights() {
 		if (!hasRun) {
 			if (Time.time < activationTimer +repeatDelay) {
@@ -121,6 +107,36 @@ public class Trigger : MonoBehaviour {
 			isRepeatable = false;
 			End();
 		}
+	}
+
+	void Smoke() {
+		if (run) {
+			ParticleSystem.Particle[] particles = new ParticleSystem.Particle[GetComponentInChildren<ParticleSystem>().particleCount];
+			GetComponentInChildren<ParticleSystem>().GetParticles(particles);
+
+			for (int i = 0; i < particles.Length; i++) {
+				particles[i].position += Vector3.down *2 *Time.deltaTime;
+			}
+
+			GetComponentInChildren<ParticleSystem>().SetParticles(particles, particles.Length);
+		}
+	}
+
+	void Crates() {
+		for (int i = 0; i < transform.childCount; i++) {
+			Vector3 playerDir = new Vector3(player.position.x +Random.Range(-15, 15), 0, player.position.z +Random.Range(-15, 15)) -transform.position;
+			float force = Random.Range (150, 200);
+			transform.GetChild(i).rigidbody.isKinematic = false;
+			transform.GetChild(i).rigidbody.AddForce(playerDir.normalized *force, ForceMode.Impulse);
+		}
+		End();
+	}
+
+	void MonsterSpawn() {
+		GameObject enemy = (GameObject)Instantiate(Resources.Load("Prefabs/Monster"));
+		enemy.transform.position = transform.position;
+
+		End();
 	}
 
 	void End() {
